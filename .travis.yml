@@ -1,20 +1,15 @@
 language: java
 install: true
 sudo: required
-
 addons:
   apt:
     packages:
     - docker-ce
-
 services:
   - docker
-
 before_install:
   - docker run -d -p 5000:5000 --restart=always --name registry registry:2
-
 jdk: oraclejdk8
-
 jobs:
   include:
     - stage: all tests
@@ -26,11 +21,9 @@ jobs:
         script: ./gradlew -s clean assemble bintrayUpload gitPublishPush -Dorg.ajoberstar.grgit.auth.username=$GH_TOKEN
         on:
           tags: true
-
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
     - $HOME/.gradle/caches/
