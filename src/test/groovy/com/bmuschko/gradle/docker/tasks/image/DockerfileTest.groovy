@@ -1,47 +1,40 @@
-package com.bmuschko.gradle.docker.tasks.image
-
-import spock.lang.Specification
+package 
+    com.bmuschko.gradle.docker.tasks.image import spock.lang.Specification
 import spock.lang.Unroll
-
-import java.util.logging.Level
-import java.util.logging.Logger
-
-import static com.bmuschko.gradle.docker.tasks.image.Dockerfile.*
-
-class DockerfileTest extends Specification {
-    private static Logger LOG = Logger.getLogger(DockerfileTest.class.getCanonicalName())
-
-    @Unroll
+          import 
+    java.util.
+    logging.Level 
+import 
+    java.util.logging.Logger
+import static 
+    com.bmuschko.gradle
+.docker.tasks
+.image.Dockerfile.* class DockerfileTest 
+    extends Specification { private static Logger 
+                           LOG = Logger.getLogger
+                           (DockerfileTest.class.getCanonicalName())@Unroll
     def "#expectedKeyword instruction String representation is built correctly"() {
-        given:
-        LOG.fine "testing " + [
-            instruction: instructionInstance.class,
-            becomes: [
-                keyword: expectedKeyword,
-                withBuildText: expectedBuiltInstruction,
-            ]
-        ]
-
-        when:
-        def actual
-        try {
-            actual = instructionInstance.getText()
-        }
-        catch(Exception e) {
-            LOG.info "Exception caught with message `${e.message}`"
-            if(!expectedBuiltInstruction.equals(e.class)) {
-                LOG.log(Level.WARNING, e.stackTrace?.join('\n\t'))
-            }
-            actual = e.class
-        }
-
-        then:
-        instructionInstance.keyword == expectedKeyword
-        actual == expectedBuiltInstruction
-
-        where:
-        instructionInstance                                                             | expectedKeyword | expectedBuiltInstruction
-        new GenericInstruction('FROM ubuntu:14.04')                                     | 'FROM'          | 'FROM ubuntu:14.04'
+        given: LOG.fine
+        "testing " + [  instruction: 
+                      instructionInstance.class, becomes: 
+                      [ keyword: expected
+                       Keyword, withBuildText: expected
+                       BuiltInstruction,]
+                     ] when: def actual try 
+        { actual = instruction
+         Instance.getText() 
+        } catch(Exception e) { LOG.info
+                              "Exception caught with message 
+                              `${e.message}`" if
+                              (!expectedBuiltInstruction.equals
+                               (e.class)) { LOG.log
+                                           (Level.WARNING,
+                                            e.stackTrace?.join
+                                            ('\n\t'))}
+                              actual = class } then:instructionInstance
+        .keyword == expectedKeyword
+        actual == expectedBuiltInstruction  where:
+        instructionInstance                                                             | expectedKeyword | expectedBuiltInstruction  new GenericInstruction('FROM ubuntu:14.04')                                     | 'FROM'          | 'FROM ubuntu:14.04'
         new FromInstruction('ubuntu:14.04')                                             | 'FROM'          | 'FROM ubuntu:14.04'
         new RunCommandInstruction('apt-get update && apt-get clean')                    | 'RUN'           | 'RUN apt-get update && apt-get clean'
         new DefaultCommandInstruction('ping google.com')                                | 'CMD'           | 'CMD ["ping google.com"]'
